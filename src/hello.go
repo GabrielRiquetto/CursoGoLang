@@ -6,49 +6,40 @@ import (
 )
 
 func main() {
-	var command int
-
-	introduction()
-	showMenu()
-	command = getCommand()
-	doSomething(command)
-
+	name := introduction()
+	getResponse := showMenu(name)
+	doSomething(getResponse)
 }
 
-func introduction() {
+func introduction() string {
 	var name string
 	fmt.Println("Qual é o seu nome?")
 	fmt.Scan(&name)
-
-	fmt.Println("Olá, Sr.", name)
-
+	fmt.Println("Seja bem vindo(a)")
+	return name
 }
 
-func showMenu() {
-	fmt.Println("O que você deseja?")
-
-	fmt.Println("1 - Iniciar Monitoramento")
+func showMenu(name string) int {
+	var response int
+	fmt.Println("O que você deseja", name, "?")
+	fmt.Println("1 - Inciar Monitoramento")
 	fmt.Println("2 - Exibir Logs")
 	fmt.Println("0 - Sair do Programa")
-}
-
-func getCommand() int {
-	var comando int
-
-	fmt.Scan(&comando)
-	return comando
+	fmt.Scan(&response)
+	return response
 }
 
 func doSomething(command int) {
-	if command == 1 {
-		fmt.Println("Iniciando Monitoramento")
-	} else if command == 2 {
-		fmt.Println("Exibindo Logs")
-	} else if command == 0 {
-		fmt.Println("Saindo... Até mais!!")
+	switch command {
+	case 1:
+		fmt.Println("Iniciando Monitoramento!")
+	case 2:
+		fmt.Println("Exibindo Logs...")
+	case 0:
+		fmt.Println("Saindo, até mais!")
 		os.Exit(0)
-	} else {
-		fmt.Println("Não conheço o seu comando, desculpe =(")
+	default:
+		fmt.Println("Não entendi o que você quis dizer... Desculpe!")
 		os.Exit(-1)
 	}
 }
