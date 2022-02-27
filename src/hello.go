@@ -2,13 +2,27 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
 func main() {
 	name := introduction()
-	getResponse := showMenu(name)
-	doSomething(getResponse)
+	for {
+		getResponse := showMenu(name)
+		switch getResponse {
+		case 1:
+			startingMonitoring()
+		case 2:
+			fmt.Println("Exibindo Logs...")
+		case 0:
+			fmt.Println("Saindo, até mais!")
+			os.Exit(0)
+		default:
+			fmt.Println("Não entendi o que você quis dizer... Desculpe!")
+			os.Exit(-1)
+		}
+	}
 }
 
 func introduction() string {
@@ -29,17 +43,13 @@ func showMenu(name string) int {
 	return response
 }
 
-func doSomething(command int) {
-	switch command {
-	case 1:
-		fmt.Println("Iniciando Monitoramento!")
-	case 2:
-		fmt.Println("Exibindo Logs...")
-	case 0:
-		fmt.Println("Saindo, até mais!")
-		os.Exit(0)
-	default:
-		fmt.Println("Não entendi o que você quis dizer... Desculpe!")
-		os.Exit(-1)
+func startingMonitoring() {
+	fmt.Println("Monitoranto...")
+	site := "https://random-status-code.herokuapp.com/"
+	response, _ := http.Get(site)
+	if response.StatusCode == 200 {
+		fmt.Println("O site", site, "foi carregado com sucesso!")
+	} else {
+		fmt.Println("O site", site, "está com problema!", response.StatusCode)
 	}
 }
